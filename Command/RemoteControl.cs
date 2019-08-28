@@ -6,39 +6,48 @@ namespace Command
 {
     public class RemoteControl
     {
-        List<ICommand> OnCommands;
-        List<ICommand> OffCommands;
+        List<ICommand> onCommands;
+        List<ICommand> offCommands;
+        ICommand undoCommand;
 
         public RemoteControl()
         {
-            OnCommands = new List<ICommand>(7);
-            OffCommands = new List<ICommand>(7);
+            onCommands = new List<ICommand>(7);
+            offCommands = new List<ICommand>(7);
 
             ICommand noCommand = new NoCommand();
             for (int i = 0; i < 7; i++)
             {
-                OnCommands.Add(noCommand);
-                OffCommands.Add(noCommand);
-            }
+                onCommands.Add(noCommand);
+                offCommands.Add(noCommand);
+        }
+
+            undoCommand = noCommand;
         }
 
         public void SetCommand(int position, ICommand onCommand, ICommand offCommand)
         {
-            OnCommands.RemoveAt(position);
-            OnCommands.Insert(position, onCommand);
+            onCommands.RemoveAt(position);
+            onCommands.Insert(position, onCommand);
 
-            OffCommands.RemoveAt(position);
-            OffCommands.Insert(position, offCommand);
+            offCommands.RemoveAt(position);
+            offCommands.Insert(position, offCommand);
         }
 
         public void OnButtonWasPushed(int position)
         {
-            OnCommands[position].Execute();
+            onCommands[position].Execute();
+            undoCommand = onCommands[position];
         }
 
         public void OffButtonWasPushed(int position)
         {
-            OffCommands[position].Execute();
+            offCommands[position].Execute();
+            undoCommand = offCommands[position];
+        }
+
+        public void UndoButtonWasPushed() {
+            undoCommand.Undo();
         }
 
         public override string ToString()
@@ -46,11 +55,15 @@ namespace Command
             StringBuilder sb = new StringBuilder();
             sb.Append("\n------- Remote Control -------\n");
 
-            for (int i = 0; i < OnCommands.Count; i++)
+            for (int i = 0; i < onCommands.Count; i++)
             {
                 sb.AppendLine(
-                    $"[slot {i}] {OnCommands[i].GetType().Name} {OffCommands[i].GetType().Name}");
+                    $"[slot {i}] {onCommands[i].GetType().Name} {offCommands[i].GetType().Name}");
             }
+
+            sb.AppendLine(
+                $"[undo] {undoCommand.GetType().Name}"
+            );
 
             return sb.ToString();
         }

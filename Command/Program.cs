@@ -23,10 +23,23 @@ namespace Command
             remote.SetCommand(0, livingRoomLightOn, livingRoomLightOff);
             remote.SetCommand(1, kitchenLightOn, kitchenLightOff);
 
-            Console.WriteLine(remote);
-
+            // Turn living room light on then off
             remote.OnButtonWasPushed(0);
             remote.OffButtonWasPushed(0);
+            Console.WriteLine(remote);
+
+            // Undo the last command
+            remote.UndoButtonWasPushed();
+
+            // Turn living room light off then on
+            remote.OffButtonWasPushed(0);
+            remote.OnButtonWasPushed(0);
+            Console.WriteLine(remote);
+
+            // Undo the last command
+            remote.UndoButtonWasPushed();
+
+            // Turn the kitchen light on then off
             remote.OnButtonWasPushed(1);
             remote.OffButtonWasPushed(1);
         }
