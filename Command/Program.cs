@@ -42,6 +42,31 @@ namespace Command
             // Turn the kitchen light on then off
             remote.OnButtonWasPushed(1);
             remote.OffButtonWasPushed(1);
+
+            Console.WriteLine();
+
+            CeilingFan ceilingFan = new CeilingFan("Living Room");
+
+            CeilingFanMediumCommand ceilingFanMedium =
+                new CeilingFanMediumCommand(ceilingFan);
+
+            CeilingFanHighCommand ceilingFanHigh =
+                new CeilingFanHighCommand(ceilingFan);
+
+            CeilingFanOffCommand ceilingFanOff =
+                new CeilingFanOffCommand(ceilingFan);
+
+            remote.SetCommand(2, ceilingFanMedium, ceilingFanOff);
+            remote.SetCommand(3, ceilingFanHigh, ceilingFanOff);
+
+            remote.OnButtonWasPushed(2);
+            remote.OffButtonWasPushed(2);
+            Console.WriteLine(remote);
+            remote.UndoButtonWasPushed();
+
+            remote.OnButtonWasPushed(3);
+            Console.WriteLine(remote);
+            remote.UndoButtonWasPushed();
         }
     }
 }
