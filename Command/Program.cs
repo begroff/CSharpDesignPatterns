@@ -67,6 +67,42 @@ namespace Command
             remote.OnButtonWasPushed(3);
             Console.WriteLine(remote);
             remote.UndoButtonWasPushed();
+
+            Light light = new Light("Living Room");
+            TV tv = new TV("Living Room");
+            Stereo stereo = new Stereo("Living Room");
+            Hottub hottub = new Hottub();
+
+            LightOnCommand lightOn = new LightOnCommand(light);
+            StereoOnCommand stereoOn = new StereoOnCommand(stereo);
+            TVOnCommand tvOn = new TVOnCommand(tv);
+            HottubOnCommand hottubOn = new HottubOnCommand(hottub);
+
+            LightOffCommand lightOff = new LightOffCommand(light);
+            StereoOffCommand stereoOff = new StereoOffCommand(stereo);
+            TVOffCommand tvOff = new TVOffCommand(tv);
+            HottubOffCommand hottubOff = new HottubOffCommand(hottub);
+
+            ICommand[] partyOn = { lightOn, stereoOn, tvOn, hottubOn };
+            ICommand[] partyOff = { lightOff, stereoOff, tvOff, hottubOff };
+
+            MacroCommand partyOnMacro = new MacroCommand(partyOn);
+            MacroCommand partyOffMacro = new MacroCommand(partyOff);
+
+            remote.SetCommand(4, partyOnMacro, partyOffMacro);
+
+            Console.WriteLine(remote);
+            remote.OnButtonWasPushed(4);
+            remote.OffButtonWasPushed(4);
+
+
+
+            remote.SetCommand(
+                5,
+                () => { livingRoomLight.On(); },
+                () => { livingRoomLight.Off();}
+            );
+
         }
     }
 }
