@@ -94,15 +94,6 @@ namespace Command
             Console.WriteLine(remote);
             remote.OnButtonWasPushed(4);
             remote.OffButtonWasPushed(4);
-
-
-
-            remote.SetCommand(
-                5,
-                () => { livingRoomLight.On(); },
-                () => { livingRoomLight.Off();}
-            );
-
         }
     }
 }
